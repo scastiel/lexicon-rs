@@ -1,8 +1,10 @@
 use std::fs::File;
 use std::io::prelude::*;
 
+mod parser;
+
 pub fn main() -> std::io::Result<()> {
-  let lex = lexicon::get_lexicon().unwrap();
+  let lex = parser::get_lexicon().unwrap();
   let serialized = bincode::serialize(&lex).unwrap();
   println!("{:?}", serialized.len());
 
