@@ -1,6 +1,7 @@
 use lexicon::*;
 use regex::Regex;
 use std::fmt::Debug;
+use std::fs::read_to_string;
 
 #[derive(Debug)]
 pub struct ParseError(String);
@@ -41,8 +42,10 @@ fn read_cells_line(line: String, y: i32) -> Vec<Cell> {
   cells
 }
 
-pub fn get_lexicon() -> Result<Lexicon, ParseError> {
-  let mut lines = include_str!("../res/lexicon.txt").lines();
+pub fn get_lexicon(filename: &str) -> Result<Lexicon, ParseError> {
+  let lexicon_txt =
+    read_to_string(filename).expect(format!("Can’t read file {}", filename).as_str());
+  let mut lines = lexicon_txt.lines();
 
   loop {
     match lines.next() {
@@ -116,8 +119,10 @@ pub fn get_lexicon() -> Result<Lexicon, ParseError> {
 mod tests {
   use super::*;
 
+  const LEXICON_FILE: &str = "res/lexicon.txt";
+
   fn get_test_lexicon() -> Lexicon {
-    let lexicon = get_lexicon();
+    let lexicon = get_lexicon(LEXICON_FILE);
     assert_eq!(lexicon.is_ok(), true);
     lexicon.unwrap()
   }

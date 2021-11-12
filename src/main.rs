@@ -3,12 +3,19 @@ use std::io::prelude::*;
 
 mod parser;
 
-pub fn main() -> std::io::Result<()> {
-  let lex = parser::get_lexicon().unwrap();
-  let serialized = bincode::serialize(&lex).unwrap();
-  println!("{:?}", serialized.len());
+const INPUT_LEXICON_FILE: &str = "res/lexicon.txt";
+const OUTPUT_LEXICON_FILE: &str = "res/lexicon.bin";
 
-  let mut file = File::create("lexicon.bin")?;
+pub fn main() -> std::io::Result<()> {
+  print!("Reading file {}... ", INPUT_LEXICON_FILE);
+  let lex = parser::get_lexicon(INPUT_LEXICON_FILE).unwrap();
+  let serialized = bincode::serialize(&lex).unwrap();
+  println!("✅");
+
+  print!("Writing result to file {}... ", OUTPUT_LEXICON_FILE);
+  let mut file = File::create(OUTPUT_LEXICON_FILE)?;
   file.write_all(&serialized)?;
+  println!("✅");
+
   Ok(())
 }
