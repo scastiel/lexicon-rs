@@ -1,9 +1,11 @@
 # Lexicon
 
-![Crates.io](https://img.shields.io/crates/v/lexicon)
+[![Crates.io](https://img.shields.io/crates/v/lexicon)](https://crates.io/crates/lexicon)
 [![Rust](https://github.com/scastiel/lexicon-rs/actions/workflows/rust.yml/badge.svg)](https://github.com/scastiel/lexicon-rs/actions/workflows/rust.yml)
 
 A convenient interface to get patterns from the [Lexicon](http://conwaylife.com/ref/lexicon/lex_home.htm) and use them in your implementation of [Conway’s Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
+
+_Used by [Lifeee](https://lifeee.netlify.app), my web app implementation of Conway’s Game of Life, check it out!_
 
 ## Usage
 
