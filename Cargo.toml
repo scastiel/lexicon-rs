@@ -2,6 +2,10 @@
 name = "lexicon"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "A convenient interface to get patterns from Conway’s Game of Life’s Lexicon."
+homepage = "https://github.com/scastiel/lexicon-rs"
+repository = "https://github.com/scastiel/lexicon-rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
