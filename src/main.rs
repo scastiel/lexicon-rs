@@ -1,6 +1,7 @@
 use std::fs::File;
 use std::io::prelude::*;
 
+mod lex;
 mod parser;
 
 const INPUT_LEXICON_FILE: &str = "res/lexicon.txt";
@@ -8,7 +9,7 @@ const OUTPUT_LEXICON_FILE: &str = "res/lexicon.bin";
 
 pub fn main() -> std::io::Result<()> {
   print!("Reading file {}... ", INPUT_LEXICON_FILE);
-  let lex = parser::get_lexicon(INPUT_LEXICON_FILE).unwrap();
+  let lex = parser::get_lexicon_from_file(INPUT_LEXICON_FILE).unwrap();
   let serialized = bincode::serialize(&lex).unwrap();
   println!("✅");
 

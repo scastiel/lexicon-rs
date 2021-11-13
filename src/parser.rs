@@ -1,10 +1,24 @@
-use lexicon::*;
+use crate::lex::*;
 use regex::Regex;
+use std::error::Error;
+use std::fmt;
 use std::fmt::Debug;
 use std::fs::read_to_string;
 
 #[derive(Debug)]
 pub struct ParseError(String);
+
+impl fmt::Display for ParseError {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(f, "Parse error: {}", self.0)
+  }
+}
+
+impl Error for ParseError {
+  fn description(&self) -> &str {
+    self.0.as_str()
+  }
+}
 
 fn read_term_name(line: String) -> Option<(String, Vec<String>, String)> {
   let re = Regex::new(r"^:(?P<name>[^:]+): (\((?P<tags>[^)]+)\))?(?P<desc>.*)$").unwrap();
@@ -42,9 +56,7 @@ fn read_cells_line(line: String, y: i32) -> Vec<Cell> {
   cells
 }
 
-pub fn get_lexicon(filename: &str) -> Result<Lexicon, ParseError> {
-  let lexicon_txt =
-    read_to_string(filename).expect(format!("Can’t read file {}", filename).as_str());
+fn parse_lexicon(lexicon_txt: String) -> Result<Lexicon, ParseError> {
   let mut lines = lexicon_txt.lines();
 
   loop {
@@ -115,6 +127,20 @@ pub fn get_lexicon(filename: &str) -> Result<Lexicon, ParseError> {
   Ok(lexicon)
 }
 
+/// Parses a text lexicon file and returns the resulting Lexicon struct.
+///
+/// # Examples
+///
+/// ```
+/// let lexicon = lexicon::get_lexicon_from_file("res/lexicon.txt");
+/// assert_eq!(lexicon.is_ok(), true);
+/// ```
+pub fn get_lexicon_from_file(filename: &str) -> Result<Lexicon, Box<dyn Error>> {
+  let lexicon_txt = read_to_string(filename)?;
+  let lexicon = parse_lexicon(lexicon_txt)?;
+  Ok(lexicon)
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -122,7 +148,7 @@ mod tests {
   const LEXICON_FILE: &str = "res/lexicon.txt";
 
   fn get_test_lexicon() -> Lexicon {
-    let lexicon = get_lexicon(LEXICON_FILE);
+    let lexicon = get_lexicon_from_file(LEXICON_FILE);
     assert_eq!(lexicon.is_ok(), true);
     lexicon.unwrap()
   }
